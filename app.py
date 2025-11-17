@@ -17,21 +17,9 @@ logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
-# Configure CORS to allow edge devices on specific ports
-def is_allowed_origin(origin):
-    """Check if origin is from allowed ports"""
-    if not origin:
-        return False
-    # Allow localhost and any hostname on ports 8080-8081
-    allowed_patterns = [
-        ':8080',
-        ':8081'
-    ]
-    return any(pattern in origin for pattern in allowed_patterns)
-
 CORS(app, resources={
     r"/api/*": {
-        "origins": is_allowed_origin,
+        "origins": r".*:(8080|8081)$",  # Regex pattern for any host on ports 8080-8081
         "methods": ["GET", "POST", "OPTIONS"],
         "allow_headers": ["Content-Type"],
         "supports_credentials": True
